@@ -12,12 +12,6 @@ model readZone
     y(unit="m3/s")) "Supply air flowrate to zone measurement"
     annotation (Placement(transformation(extent={{-4,-64},{16,-44}})));
 
-  Buildings.Utilities.IO.SignalExchange.Read DamPosition(
-    description="VAV zone damper position",
-    KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.None,
-    y(unit="1")) "VAV zone damper position"
-    annotation (Placement(transformation(extent={{-6,26},{14,46}})));
-
   Modelica.Blocks.Interfaces.RealInput TSupZone_in
     "Connector of Real input signal" annotation (Placement(transformation(
           extent={{-142,-24},{-102,16}}), iconTransformation(extent={{-142,-24},
@@ -26,17 +20,22 @@ model readZone
     "Connector of Real input signal" annotation (Placement(transformation(
           extent={{-140,-74},{-100,-34}}), iconTransformation(extent={{-140,-74},
             {-100,-34}})));
-  Modelica.Blocks.Interfaces.RealInput DamPosition_in
-    "Connector of Real input signal" annotation (Placement(transformation(
-          extent={{-142,16},{-102,56}}), iconTransformation(extent={{-142,16},{
-            -102,56}})));
+  Buildings.Utilities.IO.SignalExchange.Read TZon(
+    description="Zone air temperature measurement for zone",
+    KPIs=Buildings.Utilities.IO.SignalExchange.SignalTypes.SignalsForKPIs.AirZoneTemperature,
+    y(unit="K"))
+               "Zone air temperature measurement"
+    annotation (Placement(transformation(extent={{-8,44},{12,64}})));
+
+  Modelica.Blocks.Interfaces.RealInput TZone "Connector of Real input signal"
+    annotation (Placement(transformation(extent={{-142,34},{-102,74}})));
 equation
   connect(TSupZone.u, TSupZone_in)
     annotation (Line(points={{-8,-4},{-122,-4}}, color={0,0,127}));
   connect(V_flow.u, VflowSupply_in)
     annotation (Line(points={{-6,-54},{-120,-54}}, color={0,0,127}));
-  connect(DamPosition.u, DamPosition_in)
-    annotation (Line(points={{-8,36},{-122,36}}, color={0,0,127}));
+  connect(TZon.u, TZone)
+    annotation (Line(points={{-10,54},{-122,54}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Rectangle(
           extent={{-102,100},{100,-98}},
